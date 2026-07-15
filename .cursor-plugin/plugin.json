@@ -1,0 +1,22 @@
+{
+  "name": "wakatime",
+  "displayName": "WakaTime",
+  "version": "1.0.0",
+  "description": "Track Cursor AI coding activity automatically with WakaTime.",
+  "author": {
+    "name": "WakaTime",
+    "email": "support@wakatime.com"
+  },
+  "homepage": "https://wakatime.com/cursor",
+  "repository": "https://github.com/wakatime/cursor-wakatime",
+  "license": "BSD-3-Clause",
+  "logo": "assets/wakatime-logo.png",
+  "keywords": [
+    "analytics",
+    "cursor",
+    "metrics",
+    "productivity",
+    "time-tracking",
+    "wakatime"
+  ]
+}

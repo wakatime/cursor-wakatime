@@ -1,0 +1,27 @@
+{
+  "name": "cursor-wakatime",
+  "version": "1.0.0",
+  "description": "WakaTime plugin for Cursor",
+  "private": true,
+  "scripts": {
+    "check": "node --check bin/cursor-wakatime.js && node scripts/validate-plugin.js",
+    "test": "npm run check && node --test test/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wakatime/cursor-wakatime.git"
+  },
+  "keywords": [
+    "cursor",
+    "cursor-plugin",
+    "wakatime",
+    "time-tracking",
+    "ai"
+  ],
+  "author": "WakaTime",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/wakatime/cursor-wakatime/issues"
+  },
+  "homepage": "https://github.com/wakatime/cursor-wakatime#readme"
+}

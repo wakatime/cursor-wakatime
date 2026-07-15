@@ -1,0 +1,19 @@
+{
+  "hooks": {
+    "sessionStart": [
+      {
+        "command": "node ./bin/cursor-wakatime.js --background"
+      }
+    ],
+    "beforeSubmitPrompt": [
+      {
+        "command": "node ./bin/cursor-wakatime.js --background"
+      }
+    ],
+    "afterFileEdit": [
+      {
+        "command": "node ./bin/cursor-wakatime.js --background"
+      }
+    ]
+  }
+}
