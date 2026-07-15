@@ -47,13 +47,8 @@ npm test
 
 Restart Cursor after changing the manifest or hooks.
 
-## Publish
-
-Push this repository to `github.com/wakatime/cursor-wakatime`, then submit its public repository URL at [cursor.com/marketplace/publish][publish]. Cursor reviews plugins before they appear in the Marketplace.
-
 [api-key]: https://wakatime.com/api-key
 [cursor]: https://cursor.com/
-[publish]: https://cursor.com/marketplace/publish
 [vscode-wakatime]: https://marketplace.visualstudio.com/items?itemName=WakaTime.vscode-wakatime
 [wakatime]: https://wakatime.com/
 [wakatime-cli]: https://github.com/wakatime/wakatime-cli
