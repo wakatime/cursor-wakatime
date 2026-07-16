@@ -15,10 +15,12 @@ const PLUGIN_NAME = 'cursor-wakatime';
 const GITHUB_DOWNLOAD_URL = 'https://github.com/wakatime/wakatime-cli/releases/latest/download';
 const GITHUB_RELEASES_URL = 'https://api.github.com/repos/wakatime/wakatime-cli/releases/latest';
 
-main().catch((error) => {
-  logException('ERROR', error);
-  process.exit(0);
-});
+if (require.main === module) {
+  main().catch((error) => {
+    logException('ERROR', error);
+    process.exit(0);
+  });
+}
 
 async function main() {
   if (process.argv.includes('--background')) {
@@ -109,13 +111,7 @@ function normalizeEventName(eventName) {
 }
 
 async function syncAiHeartbeats(cliPath, input) {
-  const normalized = normalizeInput(input);
-  const plugin = `cursor/${normalized.cursorVersion || 'unknown'} ${PLUGIN_NAME}/${VERSION}`;
-  const args = ['--sync-ai-heartbeats', '--plugin', plugin];
-
-  if (normalized.cwd) {
-    args.push('--project-folder', normalized.cwd);
-  }
+  const args = buildAiHeartbeatArgs(input);
 
   log('DEBUG', `Syncing AI heartbeats: ${formatArguments(cliPath, args)}`);
 
@@ -130,6 +126,18 @@ async function syncAiHeartbeats(cliPath, input) {
   } catch (error) {
     logException('WARN', error);
   }
+}
+
+function buildAiHeartbeatArgs(input) {
+  const normalized = normalizeInput(input);
+  const plugin = `cursor/${normalized.cursorVersion || 'unknown'} ${PLUGIN_NAME}/${VERSION}`;
+  const args = ['--sync-ai-heartbeats', '--plugin', plugin];
+
+  if (normalized.cwd) {
+    args.push('--project-folder', normalized.cwd);
+  }
+
+  return args;
 }
 
 async function ensureWakatimeCli(options = {}) {
@@ -684,3 +692,9 @@ function compareVersions(left, right) {
 function randomString() {
   return Math.random().toString(36).slice(2);
 }
+
+module.exports = {
+  buildAiHeartbeatArgs,
+  normalizeEventName,
+  shouldSyncHeartbeat,
+};

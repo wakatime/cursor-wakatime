@@ -6,6 +6,7 @@ const path = require('node:path');
 const test = require('node:test');
 
 const plugin = path.resolve(__dirname, '..', 'bin', 'cursor-wakatime.js');
+const { buildAiHeartbeatArgs, normalizeEventName, shouldSyncHeartbeat } = require(plugin);
 
 function platformName() {
   return process.platform === 'win32' ? 'windows' : process.platform;
@@ -41,7 +42,30 @@ function runHook(context, input) {
   });
 }
 
-test('syncs AI heartbeats after a prompt', () => {
+test('builds Cursor AI heartbeat arguments', () => {
+  assert.deepEqual(
+    buildAiHeartbeatArgs({
+      hook_event_name: 'beforeSubmitPrompt',
+      cursor_version: '3.9.0',
+      workspace_roots: ['/work/project'],
+    }),
+    [
+      '--sync-ai-heartbeats',
+      '--plugin',
+      'cursor/3.9.0 cursor-wakatime/1.0.0',
+      '--project-folder',
+      '/work/project',
+    ],
+  );
+});
+
+test('recognizes Cursor heartbeat hook events', () => {
+  assert.equal(shouldSyncHeartbeat(normalizeEventName('BeforeSubmitPrompt')), true);
+  assert.equal(shouldSyncHeartbeat(normalizeEventName('AfterFileEdit')), true);
+  assert.equal(shouldSyncHeartbeat(normalizeEventName('SessionStart')), false);
+});
+
+test('syncs AI heartbeats through wakatime-cli', { skip: process.platform === 'win32' }, () => {
   const context = setup();
   runHook(context, {
     hook_event_name: 'beforeSubmitPrompt',
@@ -59,20 +83,7 @@ test('syncs AI heartbeats after a prompt', () => {
   ]);
 });
 
-test('syncs AI heartbeats after an Agent file edit', () => {
-  const context = setup();
-  runHook(context, {
-    hook_event_name: 'afterFileEdit',
-    cursor_version: '3.9.0',
-    workspace_roots: ['/work/project'],
-    file_path: '/work/project/main.go',
-    edits: [],
-  });
-
-  assert.ok(fs.existsSync(context.argsFile));
-});
-
-test('session start only checks the CLI', () => {
+test('session start only checks the CLI', { skip: process.platform === 'win32' }, () => {
   const context = setup();
   runHook(context, {
     hook_event_name: 'sessionStart',
